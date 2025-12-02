@@ -14,6 +14,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { loginSchema } from "@/lib/auth/schemas";
 import { signIn } from "@/lib/auth/cognito";
 import { cookieConfig } from "@/lib/auth/config";
+import { getUserFromToken } from "@/lib/auth/verify";
+import { syncUser } from "@/lib/auth/syncUser";
 
 /**
  * POST /api/auth/login
@@ -64,7 +66,24 @@ export async function POST(request: NextRequest) {
     const tokens = await signIn(email, password);
 
     // ==========================================================================
-    // STEP 3: Create response with cookies
+    // STEP 3: Sync user to database
+    // 
+    // Extract user info from ID token and ensure they exist in our database.
+    // This creates the user on first login or updates their info on subsequent logins.
+    // ==========================================================================
+    const userInfo = await getUserFromToken(tokens.idToken);
+    
+    if (userInfo) {
+      await syncUser({
+        id: userInfo.sub,
+        email: userInfo.email,
+        name: userInfo.name,
+        emailVerified: userInfo.emailVerified,
+      });
+    }
+
+    // ==========================================================================
+    // STEP 4: Create response with cookies
     // 
     // We store tokens in HTTP-only cookies because:
     // - They can't be accessed by JavaScript (XSS protection)

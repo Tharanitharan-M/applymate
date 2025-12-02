@@ -12,18 +12,22 @@
   "dependencies": {
     "@ai-sdk/google": "^2.0.44",
     "@ai-sdk/openai": "^2.0.76",
+    "@aws-sdk/client-cognito-identity-provider": "^3.943.0",
     "@aws-sdk/client-s3": "^3.940.0",
     "@aws-sdk/s3-request-presigner": "^3.940.0",
     "@prisma/adapter-pg": "^7.0.1",
     "@prisma/client": "^7.0.1",
     "ai": "^5.0.106",
+    "amazon-cognito-identity-js": "^6.3.16",
+    "aws-jwt-verify": "^5.1.1",
     "gsap": "^3.13.0",
     "next": "16.0.6",
     "pdf-parse-fork": "^1.2.0",
     "pg": "^8.16.3",
     "prisma": "^7.0.1",
     "react": "19.2.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

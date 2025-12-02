@@ -7,35 +7,19 @@
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "orientation": "portrait-primary",
-  "icons": [
-    {
-      "src": "/icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ],
   "categories": ["productivity", "business"],
   "shortcuts": [
     {
       "name": "Add Job Application",
       "short_name": "Add Job",
       "description": "Quickly add a new job application",
-      "url": "/jobs/add",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "url": "/jobs/add"
     },
     {
       "name": "Upload Resume",
       "short_name": "Upload",
       "description": "Upload a new resume for analysis",
-      "url": "/resume/upload",
-      "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
+      "url": "/resume/upload"
     }
   ]
 }

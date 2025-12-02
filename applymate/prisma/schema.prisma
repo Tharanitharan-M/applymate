@@ -15,14 +15,17 @@ datasource db {
 
 //
 // User Model
-// Uses Cognito ID as the primary key
+// Uses Cognito sub as the primary key
+// Synced from Cognito on first authenticated request
 //
 
 model User {
-  id        String   @id // Cognito sub ID
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
+  id            String   @id // Cognito sub (unique user identifier)
+  email         String   @unique
+  name          String?
+  emailVerified Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   resumes Resume[]
   jobs    JobApplication[]

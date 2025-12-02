@@ -50,6 +50,22 @@ export {
   isTokenExpired,
 } from "./verify";
 
+// API Route Middleware
+export {
+  withAuth,
+  withOptionalAuth,
+  type AuthenticatedUser,
+  type AuthContext,
+  type ProtectedRouteHandler,
+} from "./withAuth";
+
+// User Database Sync
+export {
+  syncUser,
+  getDbUser,
+  ensureUserExists,
+} from "./syncUser";
+
 // React Context and Hook
 export { AuthProvider, useAuth } from "./context";
 

@@ -1,10 +1,24 @@
+/**
+ * Resume Upload API Route
+ * 
+ * Handles resume file uploads with Cognito authentication.
+ * Uploads the file to S3 and parses the PDF text.
+ * 
+ * PROTECTED: Requires valid Cognito authentication
+ */
+
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { s3 } from "@/lib/aws/s3";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
+import { withAuth } from "@/lib/auth/withAuth";
+import { ensureUserExists } from "@/lib/auth/syncUser";
 
-export async function POST(req: Request) {
+export const POST = withAuth(async (req, { user }) => {
   try {
+    // Ensure user exists in database (syncs from Cognito)
+    await ensureUserExists(user);
+
     const data = await req.formData();
     const file = data.get("file") as File;
 
@@ -13,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const fileKey = `resumes/${Date.now()}-${file.name}`;
+    const fileKey = `resumes/${user.id}/${Date.now()}-${file.name}`;
 
     // Upload to S3
     await s3.send(
@@ -30,23 +44,9 @@ export async function POST(req: Request) {
     const pdfParse = require("pdf-parse-fork") as (buffer: Buffer) => Promise<{ text: string }>;
     const parsed = await pdfParse(buffer);
 
-    // TEMP user ID (replace with Cognito later)
-    const userId = "demo-user";
-
-    // Ensure demo user exists
-    await prisma.user.upsert({
-      where: { id: userId },
-      update: {},
-      create: {
-        id: userId,
-        email: "demo@example.com",
-        name: "Demo User",
-      },
-    });
-
     const resume = await prisma.resume.create({
       data: {
-        userId,
+        userId: user.id,
         fileUrl: `https://${process.env.AWS_S3_BUCKET}.s3.amazonaws.com/${fileKey}`,
         parsedText: parsed.text || "",
       },
@@ -60,4 +60,4 @@ export async function POST(req: Request) {
       { status: 500 }
     );
   }
-}
+});

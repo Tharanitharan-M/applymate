@@ -19,13 +19,13 @@ datasource db {
 //
 
 model User {
-  id        String   @id        // Cognito sub ID
+  id        String   @id // Cognito sub ID
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())
 
-  resumes   Resume[]
-  jobs      JobApplication[]
+  resumes Resume[]
+  jobs    JobApplication[]
 }
 
 //
@@ -40,7 +40,7 @@ model Resume {
   parsedText String?
   createdAt  DateTime @default(now())
 
-  user       User     @relation(fields: [userId], references: [id])
+  user       User            @relation(fields: [userId], references: [id])
   jobResumes JobResumeUsed[]
 }
 
@@ -50,21 +50,20 @@ model Resume {
 //
 
 model JobApplication {
-  id             String           @id @default(cuid())
+  id             String   @id @default(cuid())
   userId         String
   company        String
   role           String
   jobUrl         String?
   jobDescription String?
-  status         String           @default("saved")
-  createdAt      DateTime         @default(now())
+  status         String   @default("saved")
+  createdAt      DateTime @default(now())
 
-  user           User             @relation(fields: [userId], references: [id])
-  aiResult       ResumeSuggestion?
-  chats          ChatMessage[]
-  usedResumes    JobResumeUsed[]
+  user        User              @relation(fields: [userId], references: [id])
+  aiResult    ResumeSuggestion?
+  chats       ChatMessage[]
+  usedResumes JobResumeUsed[]
 }
-
 
 //
 // Resume Suggestions from AI
@@ -72,18 +71,17 @@ model JobApplication {
 //
 
 model ResumeSuggestion {
-  id              String    @id @default(cuid())
-  jobId           String    @unique
-  matchScore      Int?
-  missingSkills   String[]
+  id               String   @id @default(cuid())
+  jobId            String   @unique
+  matchScore       Int?
+  missingSkills    String[]
   suggestedBullets String[]
-  improvedSummary String?
-  atsKeywords     String[]
-  createdAt       DateTime  @default(now())
+  improvedSummary  String?
+  atsKeywords      String[]
+  createdAt        DateTime @default(now())
 
   job JobApplication @relation(fields: [jobId], references: [id])
 }
-
 
 //
 // JobResumeUsed
@@ -103,7 +101,6 @@ model JobResumeUsed {
   @@unique([jobId, resumeId])
 }
 
-
 //
 // ChatMessage Model
 // Stores chat messages per job for the in job AI chat window
@@ -112,9 +109,9 @@ model JobResumeUsed {
 model ChatMessage {
   id        String   @id @default(cuid())
   jobId     String
-  role      String    // "user" or "assistant"
+  role      String // "user" or "assistant"
   message   String
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
 
   job JobApplication @relation(fields: [jobId], references: [id])
 }

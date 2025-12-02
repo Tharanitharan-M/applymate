@@ -1,0 +1,11 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow private routes
+Disallow: /api/
+Disallow: /dashboard/
+
+# Sitemap
+Sitemap: https://applymate.com/sitemap.xml
+

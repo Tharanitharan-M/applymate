@@ -22,7 +22,7 @@ ${jobDescription}
 `;
 
   const response = await generateText({
-    model: llm("gemini-pro"),
+    model: llm("gemini-2.0-flash"),
     prompt,
   });
 

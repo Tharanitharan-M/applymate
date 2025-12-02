@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//
+// User Model
+// Uses Cognito ID as the primary key
+//
+
+model User {
+  id        String   @id        // Cognito sub ID
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+
+  resumes   Resume[]
+  jobs      JobApplication[]
+}
+
+//
+// Resume Model
+// Stores the main resume a user uploads
+//
+
+model Resume {
+  id         String   @id @default(cuid())
+  userId     String
+  fileUrl    String
+  parsedText String?
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+  jobResumes JobResumeUsed[]
+}
+
+//
+// JobApplication Model
+// Tracks each job and stores the job description
+//
+
+model JobApplication {
+  id             String           @id @default(cuid())
+  userId         String
+  company        String
+  role           String
+  jobUrl         String?
+  jobDescription String?
+  status         String           @default("saved")
+  createdAt      DateTime         @default(now())
+
+  user           User             @relation(fields: [userId], references: [id])
+  aiResult       ResumeSuggestion?
+  chats          ChatMessage[]
+  usedResumes    JobResumeUsed[]
+}
+
+
+//
+// Resume Suggestions from AI
+// Stores all Gemini analysis for a specific job
+//
+
+model ResumeSuggestion {
+  id              String    @id @default(cuid())
+  jobId           String    @unique
+  matchScore      Int?
+  missingSkills   String[]
+  suggestedBullets String[]
+  improvedSummary String?
+  atsKeywords     String[]
+  createdAt       DateTime  @default(now())
+
+  job JobApplication @relation(fields: [jobId], references: [id])
+}
+
+
+//
+// JobResumeUsed
+// Stores which resume was used for which job
+// Lets the user use different resumes per application
+//
+
+model JobResumeUsed {
+  id        String   @id @default(cuid())
+  jobId     String
+  resumeId  String
+  createdAt DateTime @default(now())
+
+  job    JobApplication @relation(fields: [jobId], references: [id])
+  resume Resume         @relation(fields: [resumeId], references: [id])
+
+  @@unique([jobId, resumeId])
+}
+
+
+//
+// ChatMessage Model
+// Stores chat messages per job for the in job AI chat window
+//
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  jobId     String
+  role      String    // "user" or "assistant"
+  message   String
+  createdAt DateTime  @default(now())
+
+  job JobApplication @relation(fields: [jobId], references: [id])
+}

@@ -1,101 +1,167 @@
 # ApplyMate
 
-I built **ApplyMate** to help me — and people like me — manage job applications, track progress, and automate parts of the job-search workflow.
+ApplyMate is a tool I’m building to help me stay organized during my job search. Instead of juggling spreadsheets, notes, saved links, and random reminders, this app brings everything into one clean workflow.
 
----
+I’m building it for myself first, but also as a full-stack project that shows the kind of systems I can architect, implement, and scale.
 
-## 🎯 What is ApplyMate
+## 🎯 What ApplyMate Does
 
-I created ApplyMate because job hunting is messy. I used to juggle spreadsheets, saved job links, notes, follow-up reminders — it quickly gets chaotic. ApplyMate gives me a single place to:
+ApplyMate helps me:
 
-- Add jobs I apply to or plan to apply for.
-- Track status (applied, interviewing, offer, rejected, follow-up, etc.).
-- Keep relevant information like company name, role, link, notes, dates.
-- Get organized so I never lose track of where I applied, when I should follow up, or what next steps are.
+- Track jobs I’m interested in or have applied to.
+- Store company, role, job URL, dates, and notes in one place.
+- Upload and store multiple resumes.
+- Extract text from each resume and use AI to analyze it.
+- Compare my resume against a job description and get an ATS-style score.
+- See missing skills, keyword suggestions, and resume improvements.
+- Keep everything organized so I know where I applied and what to do next.
 
-Over time I plan to add more features: resume upload & review, outreach helper, reminders, analytics. But even the core app helps turn chaos into clarity.
+The goal is to make job-searching more structured, less overwhelming, and a bit smarter.
 
----
+## 🧰 Why I’m Building This
 
-## 🧰 Why I built this
+I’m a graduate student working toward a software engineering role. ApplyMate is my way of demonstrating that I can:
 
-I’m a graduate student and aspiring software engineer. I want to show that I can build real, full-stack systems from scratch. With ApplyMate I get to exercise backend, frontend, database, deployment, and eventually automation.
+- Design and build production-ready full-stack systems.
+- Use modern frameworks and cloud services.
+- Integrate AI into real workflows.
+- Work with databases, API routes, storage, and authentication.
+- Build something that solves a real problem I face every day.
 
-It’s not just a toy — it’s a tool I’ll actually use, and a portfolio project that reflects my skills end-to-end.
+ApplyMate isn’t a toy. It’s something I actually use.
 
-I believe this will demonstrate to potential employers that I can: design, implement, and deploy complete software systems; manage data flow; build a clean UI; and plan for growth and maintainability.
+## 🛠 Tech Stack
 
----
+Frontend
 
-## 🛠 Tech Stack (initial plan)
+- Next.js 14 (App Router)
+- TypeScript
+- TailwindCSS
+- Zustand (for state)
+- Zod (for validation)
 
-- Backend: FastAPI (Python)
-- Frontend: Next.js or React + TypeScript
-- Database: PostgreSQL (or a similar relational DB to start)
-- Containerization: Docker (for local dev & future deployment)
-- Infrastructure as code (future): Terraform or AWS CDK
-- Deployment target (future): AWS (ECS / Lambda / RDS / S3 etc.)
+Backend / API
 
----
+- Next.js server routes
+- Prisma ORM
+- Neon PostgreSQL
+- AWS S3 (resume storage)
+- Vercel AI SDK (Gemini, future: OpenAI / Claude / Grok)
 
-## 📂 Repo Structure (so far / planned)
+AI Features
 
-- /backend
-- /frontend
-- /infrastructure
-- README.md
+- Resume text extraction (pdf-parse)
+- ATS scoring using Gemini
+- Keyword & bullet point suggestions
+- Model-agnostic architecture (easy to swap models)
 
-I’ll expand this as I add more services — like notifications, outreach helper, resume review, etc.
+Dev & Infra
 
----
+- Node.js
+- Environmental config with .env.local
+- Git + GitHub
 
-## ✅ Current Status & Next Steps
+More infrastructure (Cognito authentication, CI/CD, Docker, Terraform/CDK) will come as the project grows.
 
-**What’s done so far:**
+📂 Current Repo Structure
 
-- Repository created with basic folder structure
+```
+applymate/
+  ├── src/
+  │   ├── app/
+  │   ├── lib/
+  │   ├── api/
+  ├── prisma/
+  ├── public/
+  ├── README.md
+  └── package.json
+```
 
-**What I’m focusing on next:**
+This will expand as I add more features and services.
 
-- Build the backend skeleton and core job-tracker APIs (create, read, update, delete job entries)
-- Build a simple frontend UI to add/list/manage jobs
-- Ensure local development works reliably
+## ✅ Current Status
 
-**Planned later:**
+Completed
 
-- Add user authentication (signup / login)
-- Persist data in a database
-- Containerize with Docker
-- (Optionally) add resume upload / review, analytics, notifications, outreach helper
-- Deploy to cloud with CI/CD
+- Project setup with Next.js + TypeScript
+- Database setup with Prisma + Neon
+- S3 integration
+- Resume upload API
+- PDF text extraction
+- Auto-creating a test user
+- ATS scoring pipeline structure
+- Model-agnostic AI setup with Vercel AI SDK
 
----
+In Progress
 
-## 🚀 How to Run Locally (once implementation starts)
+- Resume upload UI
+- Job creation UI
+- ATS scoring integration in the job creation process
+
+Planned
+
+- User authentication (AWS Cognito or Auth.js)
+- Dashboard with analytics
+- Job scraping / auto-fetching
+- Outreach helper (suggest who to reach out to and what to say)
+- Reminders & notifications
+- Full CI/CD and cloud deployment
+
+## 🚀 How to Run Locally
 
 1. Clone the repo:
 
-   ```bash
-   git clone https://github.com/Tharanitharan-M/applymate.git
-   cd ApplyMate
-   ```
+```bash
+git clone https://github.com/Tharanitharan-M/applymate.git
+cd applymate
+```
 
-2. Go into the backend folder, install dependencies, and start the API server (e.g. via uvicorn).
-3. Go into the frontend folder, install dependencies, and start the development server.
-4. Use the UI to add, view, and manage job applications.
+2. Install dependencies:
 
-⸻
+```bash
+npm install
+```
 
-## 🔭 What I’m Learning / Aiming to Demonstrate
+3. Add required environment variables in .env.local:
 
-• Ability to build full-stack web applications (frontend + backend + database)
-• Understanding of clean code structure, modular design, good practices
-• DevOps / deployment readiness: containerization, environment setup, (eventually) cloud infra
-• Automation mindset: making tedious tasks simpler and more efficient
-• Real-world problem solving — a tool that I actually use during job search
+```bash
+DATABASE_URL="..."
+GEMINI_API_KEY="..."
+AWS_ACCESS_KEY_ID="..."
+AWS_SECRET_ACCESS_KEY="..."
+AWS_S3_BUCKET="..."
+AWS_REGION="us-east-1"
+```
 
-⸻
+4. Push Prisma schema:
 
-## 📩 Contact & Feedback
+```bash
+npx prisma generate
+```
 
-If you check out this project and have suggestions, ideas, or feedback — feel free to reach out. I might even take your ideas for future features 😊
+5. Start the dev server:
+
+```bash
+npm run dev
+```
+
+6. Visit the test page to try resume upload:
+
+```bash
+http://localhost:3000/test-upload
+```
+
+## 🔭 What I’m Demonstrating With ApplyMate
+
+- Building scalable full-stack apps
+- Integrating AI into real workflows
+- Working with cloud services (AWS S3, future Cognito)
+- Database modeling and backend architecture
+- Clean, maintainable code
+- Ability to take a real problem and design a full solution
+- Iterating quickly while keeping a long-term architecture in mind
+
+## 📩 Feedback Welcome
+
+If you have suggestions or want to collaborate, feel free to reach out.
+I’m actively expanding this project and would love input from other engineers.

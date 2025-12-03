@@ -10,6 +10,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import DeleteConfirmationModal from "@/components/dashboard/DeleteConfirmationModal";
 
 interface Resume {
   id: string;
@@ -27,6 +28,8 @@ export default function ResumePage() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [resumeToDelete, setResumeToDelete] = useState<{ id: string; name: string | null } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch resumes on mount
@@ -86,19 +89,25 @@ export default function ResumePage() {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this resume?")) {
-      return;
-    }
+  const handleDeleteClick = (resume: Resume, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigation to resume detail
+    setResumeToDelete({ id: resume.id, name: resume.name });
+    setDeleteModalOpen(true);
+  };
 
-    setDeletingId(id);
+  const handleDeleteConfirm = async () => {
+    if (!resumeToDelete) return;
+
+    setDeletingId(resumeToDelete.id);
     try {
-      const res = await fetch(`/api/resume/${id}`, {
+      const res = await fetch(`/api/resume/${resumeToDelete.id}`, {
         method: "DELETE",
       });
 
       if (res.ok) {
         await fetchResumes(); // Refresh the list
+        setDeleteModalOpen(false);
+        setResumeToDelete(null);
       } else {
         const error = await res.json();
         alert(error.error || "Failed to delete resume");
@@ -264,31 +273,23 @@ export default function ResumePage() {
                     </p>
                   </div>
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDelete(resume.id);
-                    }}
-                    disabled={deletingId === resume.id}
-                    className="ml-2 p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600 hover:text-red-700 disabled:opacity-50"
+                    onClick={(e) => handleDeleteClick(resume, e)}
+                    className="ml-2 p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600 hover:text-red-700"
                     title="Delete resume"
                   >
-                    {deletingId === resume.id ? (
-                      <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                        />
-                      </svg>
-                    )}
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
                   </button>
                 </div>
 
@@ -339,6 +340,20 @@ export default function ResumePage() {
             ))}
           </div>
         )}
+
+        {/* Delete Confirmation Modal */}
+        <DeleteConfirmationModal
+          isOpen={deleteModalOpen}
+          onClose={() => {
+            setDeleteModalOpen(false);
+            setResumeToDelete(null);
+          }}
+          onConfirm={handleDeleteConfirm}
+          title="Delete Resume"
+          message="Are you sure you want to delete this resume?"
+          itemName={resumeToDelete?.name || undefined}
+          isLoading={deletingId !== null}
+        />
       </div>
     </DashboardLayout>
   );

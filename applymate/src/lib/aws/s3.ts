@@ -23,3 +23,19 @@ export async function getPresignedUrl(key: string, expiresIn: number = 3600): Pr
 
   return await getSignedUrl(s3, command, { expiresIn });
 }
+
+/**
+ * Generate a presigned URL for viewing an S3 object inline (for PDFs, images, etc.)
+ * @param key - The S3 object key
+ * @param expiresIn - URL expiration time in seconds (default: 1 hour)
+ * @returns Presigned URL string
+ */
+export async function getPresignedUrlForViewing(key: string, expiresIn: number = 3600): Promise<string> {
+  const command = new GetObjectCommand({
+    Bucket: process.env.AWS_S3_BUCKET!,
+    Key: key,
+    ResponseContentDisposition: 'inline',
+  });
+
+  return await getSignedUrl(s3, command, { expiresIn });
+}

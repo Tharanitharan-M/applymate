@@ -1,24 +1,56 @@
 import { generateText } from "ai";
 import { llm } from "@/lib/ai/client";
 
-export async function analyzeResumeAgainstJob(resume: string, jobDescription: string) {
-  const prompt = `
-You are an expert ATS evaluator.
+export interface ResumeMatchAnalysis {
+  matchScore: number;
+  missingItems: string[]; // Combined missing skills/keywords - single line each
+  skillsMatched: string[]; // Single line each
+  suggestedBullets: string[]; // Single line each
+  improvedSummary: string; // 2-3 lines max
+  relevantExperience: string[]; // Single line each
+  improvements: Array<{
+    type: "sentence_rewrite" | "add_keyword" | "improve_bullet" | "enhance_clarity";
+    current: string; // Single line
+    suggested: string; // Single line
+    explanation: string; // Single line
+  }>;
+}
 
-Return ONLY this JSON:
+export async function analyzeResumeAgainstJob(resume: string, jobDescription: string): Promise<ResumeMatchAnalysis> {
+  const prompt = `
+You are an expert ATS evaluator and career coach. Analyze how well this resume matches a specific job description.
+
+CRITICAL FORMATTING RULES:
+- improvedSummary: MUST be exactly 2-3 lines, concise and impactful
+- missingItems: Combine missing skills AND keywords into ONE array, each item must be a SINGLE LINE
+- skillsMatched: Each skill must be a SINGLE LINE (just the skill name)
+- suggestedBullets: Each bullet must be a SINGLE LINE
+- relevantExperience: Each experience point must be a SINGLE LINE
+- improvements: Each field (current, suggested, explanation) must be a SINGLE LINE
+
+Return ONLY valid JSON (no markdown, no code blocks):
 {
-  "matchScore": number,
-  "missingSkills": string[],
-  "suggestedBullets": string[],
-  "improvedSummary": string,
-  "atsKeywords": string[]
+  "matchScore": number (0-100),
+  "missingItems": string[] (combine missing skills and keywords - single line each),
+  "skillsMatched": string[] (single line each - just skill names),
+  "suggestedBullets": string[] (single line each),
+  "improvedSummary": string (EXACTLY 2-3 lines, concise and impactful),
+  "relevantExperience": string[] (single line each),
+  "improvements": [
+    {
+      "type": "sentence_rewrite" | "add_keyword" | "improve_bullet" | "enhance_clarity",
+      "current": string (single line),
+      "suggested": string (single line),
+      "explanation": string (single line)
+    }
+  ]
 }
 
 Resume:
-${resume}
+${resume.substring(0, 15000)}
 
 Job Description:
-${jobDescription}
+${jobDescription.substring(0, 15000)}
 `;
 
   const response = await generateText({
@@ -27,15 +59,61 @@ ${jobDescription}
   });
 
   try {
-    return JSON.parse(response.text);
-  } catch {
-    console.error("AI JSON parse failed:", response.text);
+    let jsonText = response.text.trim();
+    // Remove markdown code blocks if present
+    if (jsonText.startsWith("```")) {
+      jsonText = jsonText.replace(/^```json\n?/, "").replace(/^```\n?/, "").replace(/\n?```$/, "");
+    }
+    
+    const parsed = JSON.parse(jsonText);
+    
+    // Combine missingSkills and missingKeywords if they exist separately (backwards compatibility)
+    const missingItems = Array.isArray(parsed.missingItems) 
+      ? parsed.missingItems 
+      : [
+          ...(Array.isArray(parsed.missingSkills) ? parsed.missingSkills : []),
+          ...(Array.isArray(parsed.missingKeywords) ? parsed.missingKeywords : []),
+        ];
+    
+    // Ensure improvedSummary is limited to 2-3 lines
+    let improvedSummary = parsed.improvedSummary || "";
+    const summaryLines = improvedSummary.split('\n').filter((line: string) => line.trim());
+    if (summaryLines.length > 3) {
+      improvedSummary = summaryLines.slice(0, 3).join('\n');
+    }
+    
+    return {
+      matchScore: Math.max(0, Math.min(100, parsed.matchScore || 0)),
+      missingItems: missingItems.map((item: string) => item.split('\n')[0].trim()), // Ensure single line
+      skillsMatched: Array.isArray(parsed.skillsMatched) 
+        ? parsed.skillsMatched.map((item: string) => item.split('\n')[0].trim()) 
+        : [],
+      suggestedBullets: Array.isArray(parsed.suggestedBullets) 
+        ? parsed.suggestedBullets.map((item: string) => item.split('\n')[0].trim()) 
+        : [],
+      improvedSummary: improvedSummary,
+      relevantExperience: Array.isArray(parsed.relevantExperience) 
+        ? parsed.relevantExperience.map((item: string) => item.split('\n')[0].trim()) 
+        : [],
+      improvements: Array.isArray(parsed.improvements) 
+        ? parsed.improvements.map((imp: any) => ({
+            type: imp.type,
+            current: imp.current?.split('\n')[0].trim() || "",
+            suggested: imp.suggested?.split('\n')[0].trim() || "",
+            explanation: imp.explanation?.split('\n')[0].trim() || "",
+          }))
+        : [],
+    };
+  } catch (error) {
+    console.error("AI JSON parse failed:", response.text, error);
     return {
       matchScore: 0,
-      missingSkills: [],
+      missingItems: [],
+      skillsMatched: [],
       suggestedBullets: [],
       improvedSummary: "",
-      atsKeywords: []
+      relevantExperience: [],
+      improvements: [],
     };
   }
 }

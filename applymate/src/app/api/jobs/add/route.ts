@@ -29,7 +29,7 @@ export const POST = withAuth(async (req, { user }) => {
       );
     }
 
-    const { company, role, jobUrl, jobDescription, status, resumeId } = parsed.data;
+    const { company, role, location, jobUrl, jobDescription, notes, status, resumeId } = parsed.data;
 
     // Check resume exists and belongs to this user
     const resume = await prisma.resume.findFirst({
@@ -52,8 +52,10 @@ export const POST = withAuth(async (req, { user }) => {
         userId: user.id,
         company,
         role,
+        location,
         jobUrl,
         jobDescription,
+        notes,
         status,
       },
     });

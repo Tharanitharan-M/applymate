@@ -27,8 +27,9 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  resumes Resume[]
-  jobs    JobApplication[]
+  resumes  Resume[]
+  jobs     JobApplication[]
+  contacts Contact[]
 }
 
 //
@@ -130,4 +131,84 @@ model ChatMessage {
   createdAt DateTime @default(now())
 
   job JobApplication @relation(fields: [jobId], references: [id])
+}
+
+//
+// Contact Model
+// Stores networking contacts for job search
+//
+
+model Contact {
+  id              String    @id @default(cuid())
+  userId          String
+  name            String
+  company         String?
+  role            String?
+  linkedInUrl     String?
+  email           String?
+  notes           String?
+  status          String    @default("not_contacted")
+  lastContactedAt DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user         User                 @relation(fields: [userId], references: [id])
+  interactions ContactInteraction[]
+  reminders    ContactReminder[]
+  chatMessages ContactChatMessage[]
+}
+
+//
+// ContactInteraction Model
+// Tracks timeline of interactions with a contact
+//
+
+model ContactInteraction {
+  id        String   @id @default(cuid())
+  contactId String
+  type      String // "messaged", "replied", "scheduled_call", "met", "connected", etc.
+  notes     String?
+  createdAt DateTime @default(now())
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+}
+
+//
+// ContactReminder Model
+// Stores reminders for follow-ups with contacts
+//
+
+model ContactReminder {
+  id          String   @id @default(cuid())
+  contactId   String
+  title       String
+  description String?
+  dueDate     DateTime
+  completed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
+  @@index([dueDate])
+}
+
+//
+// ContactChatMessage Model
+// Stores AI chat messages for contact outreach help
+//
+
+model ContactChatMessage {
+  id        String   @id @default(cuid())
+  contactId String
+  role      String // "user" or "assistant"
+  message   String
+  createdAt DateTime @default(now())
+
+  contact Contact @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  @@index([contactId])
 }

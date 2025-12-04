@@ -3,3 +3,5 @@ ALTER TABLE "JobApplication"
 ADD COLUMN IF NOT EXISTS "uploadedResumeUrl" TEXT,
 ADD COLUMN IF NOT EXISTS "uploadedCoverLetterUrl" TEXT;
 
+
+

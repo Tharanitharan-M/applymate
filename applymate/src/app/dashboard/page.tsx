@@ -263,7 +263,9 @@ export default function DashboardPage() {
           <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-colors">
             <div className="text-2xl mb-2">👥</div>
             <div
-              ref={(el) => (numberRefs.current["totalContacts"] = el)}
+              ref={(el) => {
+                numberRefs.current["totalContacts"] = el;
+              }}
               className="text-3xl font-bold mb-1"
             >
               0
@@ -274,7 +276,9 @@ export default function DashboardPage() {
           <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-colors">
             <div className="text-2xl mb-2">📄</div>
             <div
-              ref={(el) => (numberRefs.current["totalResumes"] = el)}
+              ref={(el) => {
+                numberRefs.current["totalResumes"] = el;
+              }}
               className="text-3xl font-bold mb-1"
             >
               0
@@ -285,7 +289,9 @@ export default function DashboardPage() {
           <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-colors">
             <div className="text-2xl mb-2">📝</div>
             <div
-              ref={(el) => (numberRefs.current["totalJobsApplied"] = el)}
+              ref={(el) => {
+                numberRefs.current["totalJobsApplied"] = el;
+              }}
               className="text-3xl font-bold mb-1"
             >
               0
@@ -442,7 +448,9 @@ export default function DashboardPage() {
                     >
                       <div className="text-2xl mb-2">{colors.icon}</div>
                       <div
-                        ref={(el) => (numberRefs.current[`status-${status}`] = el)}
+                        ref={(el) => {
+                          numberRefs.current[`status-${status}`] = el;
+                        }}
                         className={`text-3xl font-bold mb-1 ${colors.text}`}
                       >
                         0

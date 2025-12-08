@@ -1,69 +1,42 @@
 # ApplyMate
 
-ApplyMate is a tool I’m building to help me stay organized during my job search. Instead of juggling spreadsheets, notes, saved links, and random reminders, this app brings everything into one clean workflow.
+ApplyMate is a tool I'm building to help me stay organized during my job search. Instead of juggling spreadsheets, notes, saved links, and random reminders, this app brings everything into one clean workflow.
 
-I’m building it for myself first, but also as a full-stack project that shows the kind of systems I can architect, implement, and scale.
+I'm building it for myself first, but also as a full-stack project that shows the kind of systems I can architect, implement, and scale.
 
-## 🎯 What ApplyMate Does
+## What ApplyMate Does
 
-ApplyMate helps me:
+ApplyMate helps me track jobs I'm interested in or have applied to. I can store company, role, job URL, dates, and notes in one place. I can upload and store multiple resumes. The app extracts text from each resume and uses AI to analyze it. It compares my resume against a job description and gives me an ATS style score. I can see missing skills, keyword suggestions, and resume improvements. Everything stays organized so I know where I applied and what to do next.
 
-- Track jobs I’m interested in or have applied to.
-- Store company, role, job URL, dates, and notes in one place.
-- Upload and store multiple resumes.
-- Extract text from each resume and use AI to analyze it.
-- Compare my resume against a job description and get an ATS-style score.
-- See missing skills, keyword suggestions, and resume improvements.
-- Keep everything organized so I know where I applied and what to do next.
+The goal is to make job searching more structured, less overwhelming, and a bit smarter.
 
-The goal is to make job-searching more structured, less overwhelming, and a bit smarter.
+## Why I'm Building This
 
-## 🧰 Why I’m Building This
+I'm a graduate student working toward a software engineering role. ApplyMate is my way of demonstrating that I can design and build production ready full stack systems. I can use modern frameworks and cloud services. I can integrate AI into real workflows. I can work with databases, API routes, storage, and authentication. I can build something that solves a real problem I face every day.
 
-I’m a graduate student working toward a software engineering role. ApplyMate is my way of demonstrating that I can:
+ApplyMate isn't a toy. It's something I actually use.
 
-- Design and build production-ready full-stack systems.
-- Use modern frameworks and cloud services.
-- Integrate AI into real workflows.
-- Work with databases, API routes, storage, and authentication.
-- Build something that solves a real problem I face every day.
-
-ApplyMate isn’t a toy. It’s something I actually use.
-
-## 🛠 Tech Stack
+## Tech Stack
 
 Frontend
 
-- Next.js 14 (App Router)
-- TypeScript
-- TailwindCSS
-- Zustand (for state)
-- Zod (for validation)
+Next.js 14 with App Router, TypeScript, TailwindCSS, Zustand for state, and Zod for validation.
 
-Backend / API
+Backend and API
 
-- Next.js server routes
-- Prisma ORM
-- Neon PostgreSQL
-- AWS S3 (resume storage)
-- Vercel AI SDK (Gemini, future: OpenAI / Claude / Grok)
+Next.js server routes, Prisma ORM, Neon PostgreSQL, AWS S3 for resume storage, and Vercel AI SDK with Gemini. I'm planning to add OpenAI, Claude, and Grok support in the future.
 
 AI Features
 
-- Resume text extraction (pdf-parse)
-- ATS scoring using Gemini
-- Keyword & bullet point suggestions
-- Model-agnostic architecture (easy to swap models)
+Resume text extraction using pdf parse, ATS scoring using Gemini, keyword and bullet point suggestions, and a model agnostic architecture that makes it easy to swap models.
 
-Dev & Infra
+Dev and Infrastructure
 
-- Node.js
-- Environmental config with .env.local
-- Git + GitHub
+Node.js, environmental config with .env.local, Git and GitHub, and AWS Cognito for authentication.
 
-More infrastructure (Cognito authentication, CI/CD, Docker, Terraform/CDK) will come as the project grows.
+More infrastructure like CI/CD, Docker, and Terraform or CDK will come as the project grows.
 
-📂 Current Repo Structure
+## Current Repo Structure
 
 ```
 applymate/
@@ -79,35 +52,17 @@ applymate/
 
 This will expand as I add more features and services.
 
-## ✅ Current Status
+## Current Status
 
 Completed
 
-- Project setup with Next.js + TypeScript
-- Database setup with Prisma + Neon
-- S3 integration
-- Resume upload API
-- PDF text extraction
-- Auto-creating a test user
-- ATS scoring pipeline structure
-- Model-agnostic AI setup with Vercel AI SDK
-
-In Progress
-
-- Resume upload UI
-- Job creation UI
-- ATS scoring integration in the job creation process
+Project setup with Next.js and TypeScript, database setup with Prisma and Neon, S3 integration for resume storage, user authentication with AWS Cognito including login, signup, logout, and email verification, resume upload API and UI with PDF text extraction, ATS scoring pipeline with Gemini integration that compares resumes against job descriptions, job creation and management UI with full CRUD operations, dashboard with analytics showing job stats and progress tracking, networking contacts management with interactions and reminders, resume management UI with ATS score display, job detail pages with match score analysis and AI chat, contact detail pages with interaction history and reminder management, profile page for user settings, and model agnostic AI setup with Vercel AI SDK.
 
 Planned
 
-- User authentication (AWS Cognito or Auth.js)
-- Dashboard with analytics
-- Job scraping / auto-fetching
-- Outreach helper (suggest who to reach out to and what to say)
-- Reminders & notifications
-- Full CI/CD and cloud deployment
+Job scraping and auto fetching from job boards, outreach helper that suggests who to reach out to and what to say, and full CI/CD and cloud deployment.
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
 1. Clone the repo:
 
@@ -131,6 +86,10 @@ AWS_ACCESS_KEY_ID="..."
 AWS_SECRET_ACCESS_KEY="..."
 AWS_S3_BUCKET="..."
 AWS_REGION="us-east-1"
+NEXT_PUBLIC_COGNITO_USER_POOL_ID="..."
+NEXT_PUBLIC_COGNITO_CLIENT_ID="..."
+NEXT_PUBLIC_COGNITO_REGION="us-east-1"
+COGNITO_CLIENT_SECRET="..." # Optional, only if your app client has a secret
 ```
 
 4. Push Prisma schema:
@@ -145,23 +104,18 @@ npx prisma generate
 npm run dev
 ```
 
-6. Visit the test page to try resume upload:
+6. Visit the app and sign up or log in:
 
 ```bash
-http://localhost:3000/test-upload
+http://localhost:3000
 ```
 
-## 🔭 What I’m Demonstrating With ApplyMate
+You'll need to create an account first, then you can access the dashboard to manage jobs, resumes, and networking contacts.
 
-- Building scalable full-stack apps
-- Integrating AI into real workflows
-- Working with cloud services (AWS S3, future Cognito)
-- Database modeling and backend architecture
-- Clean, maintainable code
-- Ability to take a real problem and design a full solution
-- Iterating quickly while keeping a long-term architecture in mind
+## What I'm Demonstrating With ApplyMate
 
-## 📩 Feedback Welcome
+Building scalable full stack apps, integrating AI into real workflows, working with cloud services like AWS S3 and Cognito, database modeling and backend architecture, clean and maintainable code, ability to take a real problem and design a full solution, and iterating quickly while keeping a long term architecture in mind.
 
-If you have suggestions or want to collaborate, feel free to reach out.
-I’m actively expanding this project and would love input from other engineers.
+## Feedback Welcome
+
+If you have suggestions or want to collaborate, feel free to reach out. I'm actively expanding this project and would love input from other engineers.

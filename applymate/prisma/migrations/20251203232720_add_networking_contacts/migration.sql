@@ -76,3 +76,4 @@ ALTER TABLE "ContactReminder" ADD CONSTRAINT "ContactReminder_contactId_fkey" FO
 -- AddForeignKey
 ALTER TABLE "ContactChatMessage" ADD CONSTRAINT "ContactChatMessage_contactId_fkey" FOREIGN KEY ("contactId") REFERENCES "Contact"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+

@@ -8,6 +8,17 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { 
+  UserPlus, 
+  Search, 
+  Users as UsersIcon, 
+  Linkedin, 
+  Mail, 
+  Trash2, 
+  ChevronRight, 
+  Bell, 
+  RefreshCw 
+} from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AddContactModal from "@/components/dashboard/AddContactModal";
 import DeleteConfirmationModal from "@/components/dashboard/DeleteConfirmationModal";
@@ -284,21 +295,9 @@ export default function NetworkPage() {
           </div>
           <button
             onClick={() => setShowAddModal(true)}
-            className="px-6 py-3 bg-black text-white font-medium hover:bg-black/80 transition-colors rounded-lg flex items-center gap-2"
+            className="px-6 py-3 bg-black text-white font-medium hover:bg-black/80 transition-all hover:shadow-lg rounded-lg flex items-center gap-2"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
+            <UserPlus size={20} strokeWidth={2} />
             Add Contact
           </button>
         </div>
@@ -308,19 +307,7 @@ export default function NetworkPage() {
           {/* Search */}
           <div className="flex-1 min-w-[200px]">
             <div className="relative">
-              <svg
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-black/40"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                />
-              </svg>
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-black/40" strokeWidth={2} />
               <input
                 type="text"
                 placeholder="Search by name, company, or role..."
@@ -369,23 +356,26 @@ export default function NetworkPage() {
 
         {/* Upcoming Reminders Widget */}
         {upcomingReminders.length > 0 && (
-          <div className="mb-6 bg-white border border-black/10 rounded-lg p-6">
+          <div className="mb-6 bg-white border border-black/10 rounded-lg p-6 hover:border-black/30 transition-all">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
+                <Bell size={20} strokeWidth={2} className="text-black" />
                 <h2 className="text-lg font-bold">Upcoming Reminders</h2>
                 {notificationPermission !== "granted" && (
                   <button
                     onClick={requestNotificationPermission}
-                    className="text-xs px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100"
+                    className="text-xs px-3 py-1 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors flex items-center gap-1"
                   >
+                    <Bell size={12} strokeWidth={2} />
                     Enable Notifications
                   </button>
                 )}
               </div>
               <button
                 onClick={fetchUpcomingReminders}
-                className="text-sm text-black/60 hover:text-black"
+                className="text-sm text-black/60 hover:text-black flex items-center gap-1 transition-colors"
               >
+                <RefreshCw size={16} strokeWidth={2} />
                 Refresh
               </button>
             </div>
@@ -479,19 +469,7 @@ export default function NetworkPage() {
         {!loading && contacts.length === 0 && (
           <div className="border-2 border-dashed border-black/20 rounded-lg p-12 text-center">
             <div className="w-16 h-16 mx-auto mb-4 bg-black/5 rounded-full flex items-center justify-center">
-              <svg
-                className="w-8 h-8 text-black/40"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                />
-              </svg>
+              <UsersIcon className="w-8 h-8 text-black/40" strokeWidth={1.5} />
             </div>
             <h2 className="text-xl font-semibold mb-2">No contacts yet</h2>
             <p className="text-black/60 mb-6 max-w-md mx-auto">
@@ -499,7 +477,7 @@ export default function NetworkPage() {
             </p>
             <button
               onClick={() => setShowAddModal(true)}
-              className="px-6 py-3 bg-black text-white font-medium hover:bg-black/80 transition-colors rounded-lg"
+              className="px-6 py-3 bg-black text-white font-medium hover:bg-black/80 transition-all hover:shadow-lg rounded-lg"
             >
               Add Your First Contact
             </button>
@@ -632,11 +610,9 @@ function ContactCard({
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="hover:text-black flex items-center gap-1"
+                className="hover:text-black flex items-center gap-1 transition-colors"
               >
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                </svg>
+                <Linkedin className="w-4 h-4" strokeWidth={2} />
                 LinkedIn
               </a>
             )}
@@ -644,16 +620,9 @@ function ContactCard({
               <a
                 href={`mailto:${contact.email}`}
                 onClick={(e) => e.stopPropagation()}
-                className="hover:text-black flex items-center gap-1"
+                className="hover:text-black flex items-center gap-1 transition-colors"
               >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
+                <Mail className="w-4 h-4" strokeWidth={2} />
                 Email
               </a>
             )}
@@ -673,33 +642,9 @@ function ContactCard({
             className="opacity-0 group-hover:opacity-100 transition-opacity p-2 hover:bg-red-50 rounded-lg text-red-600 hover:text-red-700"
             title="Delete contact"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              />
-            </svg>
+            <Trash2 className="w-5 h-5" strokeWidth={2} />
           </button>
-          <svg
-            className="w-5 h-5 text-black/40 flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
+          <ChevronRight className="w-5 h-5 text-black/40 flex-shrink-0" strokeWidth={2} />
         </div>
       </div>
     </div>

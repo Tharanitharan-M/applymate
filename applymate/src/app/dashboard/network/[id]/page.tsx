@@ -8,6 +8,12 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
+import { 
+  ArrowLeft, 
+  Plus, 
+  MessageSquare, 
+  Send 
+} from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -336,12 +342,10 @@ export default function ContactDetailPage() {
         <div className="mb-6 flex items-start justify-between">
           <button
             onClick={() => router.push("/dashboard/network")}
-            className="text-black/60 hover:text-black mb-4 flex items-center gap-2"
+            className="text-black/60 hover:text-black mb-4 flex items-center gap-2 transition-all group"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-            Back to Network
+            <ArrowLeft className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" strokeWidth={2} />
+            <span className="font-medium">Back to Network</span>
           </button>
         </div>
 
@@ -349,7 +353,7 @@ export default function ContactDetailPage() {
           {/* Left Column - Contact Info, Interactions, Reminders */}
           <div className="lg:col-span-1 space-y-6">
             {/* Contact Information */}
-            <div className="bg-white rounded-lg border border-black/10 p-6">
+            <div className="bg-white rounded-lg border border-black/10 p-6 hover:border-black/30 transition-all">
               <div className="flex items-start justify-between mb-4">
                 <h2 className="text-xl font-bold">Contact Information</h2>
                 {!editing ? (
@@ -525,14 +529,15 @@ export default function ContactDetailPage() {
             </div>
 
             {/* Interactions Timeline */}
-            <div className="bg-white rounded-lg border border-black/10 p-6">
+            <div className="bg-white rounded-lg border border-black/10 p-6 hover:border-black/30 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">Interactions</h2>
                 <button
                   onClick={() => setShowAddInteraction(true)}
-                  className="text-black/60 hover:text-black text-sm"
+                  className="text-black/60 hover:text-black text-sm flex items-center gap-1 transition-colors"
                 >
-                  + Add
+                  <Plus size={16} strokeWidth={2} />
+                  Add
                 </button>
               </div>
               {showAddInteraction && (
@@ -594,14 +599,15 @@ export default function ContactDetailPage() {
             </div>
 
             {/* Reminders */}
-            <div className="bg-white rounded-lg border border-black/10 p-6">
+            <div className="bg-white rounded-lg border border-black/10 p-6 hover:border-black/30 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold">Reminders</h2>
                 <button
                   onClick={() => setShowAddReminder(true)}
-                  className="text-black/60 hover:text-black text-sm"
+                  className="text-black/60 hover:text-black text-sm flex items-center gap-1 transition-colors"
                 >
-                  + Add
+                  <Plus size={16} strokeWidth={2} />
+                  Add
                 </button>
               </div>
               {showAddReminder && (
@@ -690,9 +696,12 @@ export default function ContactDetailPage() {
 
           {/* Right Column - AI Outreach Helper */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-lg border border-black/10 shadow-sm flex flex-col h-[calc(100vh-180px)] lg:h-[calc(100vh-120px)]">
+            <div className="bg-white rounded-lg border border-black/10 shadow-sm hover:shadow-md flex flex-col h-[calc(100vh-180px)] lg:h-[calc(100vh-120px)] transition-all">
               <div className="p-6 border-b border-black/10">
-                <h2 className="text-xl font-bold mb-1">AI Outreach Helper</h2>
+                <div className="flex items-center gap-2 mb-1">
+                  <MessageSquare size={24} strokeWidth={2} className="text-black" />
+                  <h2 className="text-xl font-bold">AI Outreach Helper</h2>
+                </div>
                 <p className="text-sm text-black/60">
                   Get personalized outreach message suggestions for {contact.name}
                 </p>
@@ -705,9 +714,7 @@ export default function ContactDetailPage() {
                 {chatMessages.length === 0 ? (
                   <div className="text-center py-8 text-black/50">
                     <div className="w-16 h-16 mx-auto mb-4 bg-black/5 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                      </svg>
+                      <MessageSquare className="w-8 h-8 text-black/40" strokeWidth={1.5} />
                     </div>
                     <p className="font-medium mb-4">Start asking for help!</p>
                     <div className="text-xs space-y-1.5 text-left max-w-xs mx-auto">
@@ -754,15 +761,19 @@ export default function ContactDetailPage() {
                     value={chatInput}
                     onChange={(e) => setChatInput(e.target.value)}
                     placeholder="Ask for outreach help..."
-                    className="flex-1 px-4 py-2 border border-black/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-black/20"
+                    className="flex-1 px-4 py-3 border-2 border-black/10 rounded-xl focus:outline-none focus:border-black/30 transition-colors"
                     disabled={sendingMessage}
                   />
                   <button
                     type="submit"
                     disabled={!chatInput.trim() || sendingMessage}
-                    className="px-6 py-2 bg-black text-white font-medium rounded-lg hover:bg-black/80 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-5 py-3 bg-black text-white font-medium rounded-xl hover:bg-black/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-black/10"
                   >
-                    {sendingMessage ? "..." : "Send"}
+                    {sendingMessage ? (
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Send size={20} strokeWidth={2} />
+                    )}
                   </button>
                 </div>
               </form>

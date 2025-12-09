@@ -19,6 +19,11 @@ import Link from "next/link";
 import gsap from "gsap";
 import { signupSchema, verifyEmailSchema } from "@/lib/auth/schemas";
 import { useAuth } from "@/lib/auth/context";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, Eye, EyeOff, Loader2, Zap, CheckCircle2 } from "lucide-react";
 
 /**
  * Form state type for signup

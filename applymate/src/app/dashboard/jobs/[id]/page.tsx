@@ -10,6 +10,19 @@ import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { 
+  ArrowLeft, 
+  MapPin, 
+  FileText, 
+  ExternalLink, 
+  ChevronDown, 
+  StickyNote, 
+  Upload, 
+  Eye, 
+  BarChart3, 
+  MessageSquare, 
+  Send 
+} from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import DeleteConfirmationModal from "@/components/dashboard/DeleteConfirmationModal";
 
@@ -428,19 +441,10 @@ export default function JobDetailPage() {
           onClick={() => router.push("/dashboard/jobs")}
           className="mb-6 flex items-center gap-2 text-black/60 hover:text-black transition-all duration-200 group"
         >
-          <svg
-            className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
+          <ArrowLeft 
+            className="w-5 h-5 transform group-hover:-translate-x-1 transition-transform" 
+            strokeWidth={2} 
+          />
           <span className="font-medium">Back to Jobs</span>
         </button>
 
@@ -458,10 +462,7 @@ export default function JobDetailPage() {
                     <p className="text-xl lg:text-2xl text-black/70 font-medium mb-2">{job.company}</p>
                     {job.location && (
                       <p className="text-sm text-black/50 flex items-center gap-1">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                        <MapPin className="w-4 h-4" strokeWidth={2} />
                         {job.location}
                       </p>
                     )}
@@ -615,9 +616,7 @@ export default function JobDetailPage() {
                       </select>
                       {job.resume && (
                         <span className="text-sm text-black/60 flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
+                          <FileText className="w-4 h-4" strokeWidth={2} />
                           {job.resume.name || "Untitled"}
                         </span>
                       )}
@@ -634,9 +633,7 @@ export default function JobDetailPage() {
                         className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-700 rounded-xl hover:bg-blue-100 transition-all duration-200 font-medium text-sm"
                       >
                         View Job Posting
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
+                        <ExternalLink className="w-4 h-4" strokeWidth={2} />
                       </a>
                     )}
 
@@ -645,14 +642,10 @@ export default function JobDetailPage() {
                         <summary className="cursor-pointer font-semibold text-black/80 hover:text-black transition-colors py-2 list-none">
                           <span className="flex items-center gap-2">
                             Job Description
-                            <svg
+                            <ChevronDown
                               className="w-4 h-4 transform group-open:rotate-180 transition-transform"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
+                              strokeWidth={2}
+                            />
                           </span>
                         </summary>
                         <div className="mt-3 p-4 bg-black/5 rounded-xl whitespace-pre-wrap text-sm text-black/70 leading-relaxed">
@@ -664,9 +657,7 @@ export default function JobDetailPage() {
                     {job.notes && (
                       <div className="p-4 bg-amber-50 border-2 border-amber-100 rounded-xl">
                         <h3 className="font-semibold text-amber-900 mb-2 flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                          </svg>
+                          <StickyNote className="w-4 h-4" strokeWidth={2} />
                           Notes
                         </h3>
                         <p className="text-sm text-amber-800 whitespace-pre-wrap">{job.notes}</p>
@@ -677,9 +668,7 @@ export default function JobDetailPage() {
                     {(job.status === "applied" || job.status === "interviewing" || job.status === "offer" || job.status === "rejected") && (
                       <div className="mt-6 pt-6 border-t border-black/10">
                         <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                          </svg>
+                          <FileText className="w-5 h-5" strokeWidth={2} />
                           Uploaded Files
                         </h3>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -696,10 +685,7 @@ export default function JobDetailPage() {
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium"
                                 >
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                  </svg>
+                                  <Eye className="w-4 h-4" strokeWidth={2} />
                                   View Resume
                                 </a>
                                 <label className="block">
@@ -738,9 +724,7 @@ export default function JobDetailPage() {
                                     </>
                                   ) : (
                                     <>
-                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                      </svg>
+                                      <Upload className="w-5 h-5" strokeWidth={2} />
                                       Upload Resume PDF
                                     </>
                                   )}
@@ -762,10 +746,7 @@ export default function JobDetailPage() {
                                   rel="noopener noreferrer"
                                   className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 text-green-700 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium"
                                 >
-                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                  </svg>
+                                  <Eye className="w-4 h-4" strokeWidth={2} />
                                   View Cover Letter
                                 </a>
                                 <label className="block">
@@ -804,9 +785,7 @@ export default function JobDetailPage() {
                                     </>
                                   ) : (
                                     <>
-                                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                                      </svg>
+                                      <Upload className="w-5 h-5" strokeWidth={2} />
                                       Upload Cover Letter PDF
                                     </>
                                   )}
@@ -986,9 +965,7 @@ export default function JobDetailPage() {
                 ) : (
                   <div className="text-center py-12">
                     <div className="w-20 h-20 mx-auto mb-4 bg-black/5 rounded-full flex items-center justify-center">
-                      <svg className="w-10 h-10 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                      </svg>
+                      <BarChart3 className="w-10 h-10 text-black/40" strokeWidth={1.5} />
                     </div>
                     <p className="text-lg font-medium text-black/70 mb-6">No match score calculated yet</p>
                     <button
@@ -1021,9 +998,7 @@ export default function JobDetailPage() {
                 {chatMessages.length === 0 ? (
                   <div className="text-center py-8 text-black/50">
                     <div className="w-16 h-16 mx-auto mb-4 bg-black/5 rounded-full flex items-center justify-center">
-                      <svg className="w-8 h-8 text-black/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                      </svg>
+                      <MessageSquare className="w-8 h-8 text-black/40" strokeWidth={1.5} />
                     </div>
                     <p className="font-medium mb-4">Start a conversation!</p>
                     <div className="text-xs space-y-1.5 text-left max-w-xs mx-auto">
@@ -1117,9 +1092,7 @@ export default function JobDetailPage() {
                     {sendingMessage ? (
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     ) : (
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                      </svg>
+                      <Send className="w-5 h-5" strokeWidth={2} />
                     )}
                   </button>
                 </div>

@@ -20,6 +20,8 @@
     "ai": "^5.0.106",
     "amazon-cognito-identity-js": "^6.3.16",
     "aws-jwt-verify": "^5.1.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "gsap": "^3.13.0",
     "lucide-react": "^0.556.0",
     "next": "16.0.7",
@@ -30,6 +32,7 @@
     "react-dom": "19.2.1",
     "react-markdown": "^10.1.0",
     "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^3.4.0",
     "zod": "^4.1.13"
   },
   "devDependencies": {

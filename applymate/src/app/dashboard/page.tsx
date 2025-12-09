@@ -10,6 +10,19 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { gsap } from "gsap";
+import { 
+  Users, 
+  FileText, 
+  Send, 
+  Bookmark, 
+  FileCheck, 
+  MessageSquare, 
+  Award, 
+  XCircle,
+  Plus,
+  UserPlus,
+  TrendingUp
+} from "lucide-react";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import AddJobModal from "@/components/dashboard/AddJobModal";
 import { useAuth } from "@/lib/auth/context";
@@ -45,12 +58,12 @@ interface Reminder {
   };
 }
 
-const STATUS_COLORS: Record<string, { bg: string; text: string; icon: string }> = {
-  saved: { bg: "bg-gray-100", text: "text-gray-700", icon: "💾" },
-  applied: { bg: "bg-blue-100", text: "text-blue-700", icon: "📝" },
-  interview: { bg: "bg-yellow-100", text: "text-yellow-700", icon: "💬" },
-  offer: { bg: "bg-green-100", text: "text-green-700", icon: "🎉" },
-  rejected: { bg: "bg-red-100", text: "text-red-700", icon: "❌" },
+const STATUS_COLORS: Record<string, { bg: string; text: string; icon: any }> = {
+  saved: { bg: "bg-gray-100", text: "text-gray-700", icon: Bookmark },
+  applied: { bg: "bg-blue-100", text: "text-blue-700", icon: Send },
+  interview: { bg: "bg-yellow-100", text: "text-yellow-700", icon: MessageSquare },
+  offer: { bg: "bg-green-100", text: "text-green-700", icon: Award },
+  rejected: { bg: "bg-red-100", text: "text-red-700", icon: XCircle },
 };
 
 const STATUS_LABELS: Record<string, string> = {
@@ -260,8 +273,10 @@ export default function DashboardPage() {
 
         {/* Main Stats Cards */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-colors">
-            <div className="text-2xl mb-2">👥</div>
+          <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-all hover:shadow-lg group">
+            <div className="mb-3 text-gray-700 group-hover:text-black transition-colors">
+              <Users size={32} strokeWidth={1.5} />
+            </div>
             <div
               ref={(el) => {
                 numberRefs.current["totalContacts"] = el;
@@ -273,8 +288,10 @@ export default function DashboardPage() {
             <div className="text-sm text-black/60">People Networked</div>
           </div>
 
-          <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-colors">
-            <div className="text-2xl mb-2">📄</div>
+          <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-all hover:shadow-lg group">
+            <div className="mb-3 text-gray-700 group-hover:text-black transition-colors">
+              <FileText size={32} strokeWidth={1.5} />
+            </div>
             <div
               ref={(el) => {
                 numberRefs.current["totalResumes"] = el;
@@ -286,8 +303,10 @@ export default function DashboardPage() {
             <div className="text-sm text-black/60">Resumes</div>
           </div>
 
-          <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-colors">
-            <div className="text-2xl mb-2">📝</div>
+          <div className="bg-white p-6 border border-black/10 rounded-lg hover:border-black/30 transition-all hover:shadow-lg group">
+            <div className="mb-3 text-gray-700 group-hover:text-black transition-colors">
+              <Send size={32} strokeWidth={1.5} />
+            </div>
             <div
               ref={(el) => {
                 numberRefs.current["totalJobsApplied"] = el;
@@ -301,12 +320,15 @@ export default function DashboardPage() {
         </div>
 
         {/* Goals Section */}
-        <div className="bg-white border border-black/10 rounded-lg p-6">
+        <div className="bg-white border border-black/10 rounded-lg p-6 hover:border-black/30 transition-all">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold">Your Goals</h2>
+            <div className="flex items-center gap-2">
+              <TrendingUp size={24} strokeWidth={2} className="text-black" />
+              <h2 className="text-xl font-bold">Your Goals</h2>
+            </div>
             <button
               onClick={() => setShowGoalModal(true)}
-              className="text-sm text-black/60 hover:text-black transition-colors"
+              className="text-sm text-black/60 hover:text-black transition-colors font-medium"
             >
               Edit Goals
             </button>
@@ -431,7 +453,7 @@ export default function DashboardPage() {
 
         {/* Jobs by Status with Animation */}
         {stats && Object.keys(stats.jobsByStatus).length > 0 && (
-          <div className="bg-white border border-black/10 rounded-lg p-6">
+          <div className="bg-white border border-black/10 rounded-lg p-6 hover:border-black/30 transition-all">
             <h2 className="text-xl font-bold mb-6">Jobs by Status</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {Object.entries(stats.jobsByStatus)
@@ -441,12 +463,15 @@ export default function DashboardPage() {
                 })
                 .map(([status, count]) => {
                   const colors = STATUS_COLORS[status] || STATUS_COLORS.saved;
+                  const IconComponent = colors.icon;
                   return (
                     <div
                       key={status}
-                      className={`${colors.bg} p-4 rounded-lg transition-transform hover:scale-105`}
+                      className={`${colors.bg} p-4 rounded-lg transition-all hover:scale-105 hover:shadow-md`}
                     >
-                      <div className="text-2xl mb-2">{colors.icon}</div>
+                      <div className={`mb-2 ${colors.text}`}>
+                        <IconComponent size={28} strokeWidth={1.5} />
+                      </div>
                       <div
                         ref={(el) => {
                           numberRefs.current[`status-${status}`] = el;
@@ -455,7 +480,7 @@ export default function DashboardPage() {
                       >
                         0
                       </div>
-                      <div className={`text-sm ${colors.text} opacity-80`}>
+                      <div className={`text-sm ${colors.text} opacity-80 font-medium`}>
                         {STATUS_LABELS[status] || status}
                       </div>
                     </div>
@@ -524,10 +549,12 @@ export default function DashboardPage() {
         <div className="grid sm:grid-cols-2 gap-4">
           <button
             onClick={() => setShowAddJobModal(true)}
-            className="bg-black text-white p-6 rounded-lg hover:bg-black/80 transition-colors text-left"
+            className="bg-black text-white p-6 rounded-lg hover:bg-black/80 transition-all hover:shadow-lg text-left group"
           >
-            <div className="text-2xl mb-2">➕</div>
-            <div className="font-semibold mb-1">Add Job Application</div>
+            <div className="mb-3 group-hover:scale-110 transition-transform inline-block">
+              <Plus size={32} strokeWidth={2} />
+            </div>
+            <div className="font-semibold mb-1 text-lg">Add Job Application</div>
             <div className="text-sm text-white/70">
               Track a new job opportunity
             </div>
@@ -535,11 +562,13 @@ export default function DashboardPage() {
 
           <button
             onClick={() => router.push("/dashboard/network")}
-            className="bg-white border border-black text-black p-6 rounded-lg hover:bg-black hover:text-white transition-colors text-left"
+            className="bg-white border-2 border-black text-black p-6 rounded-lg hover:bg-black hover:text-white transition-all hover:shadow-lg text-left group"
           >
-            <div className="text-2xl mb-2">👥</div>
-            <div className="font-semibold mb-1">Add Contact</div>
-            <div className="text-sm text-black/60">
+            <div className="mb-3 group-hover:scale-110 transition-transform inline-block">
+              <UserPlus size={32} strokeWidth={2} />
+            </div>
+            <div className="font-semibold mb-1 text-lg">Add Contact</div>
+            <div className="text-sm text-black/60 group-hover:text-white/70 transition-colors">
               Expand your network
             </div>
           </button>

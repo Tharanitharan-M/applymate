@@ -31,12 +31,13 @@ export default function HomePage() {
     
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
+      anchor.addEventListener('click', (e) => {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href') || '');
+        const href = anchor.getAttribute('href');
+        const target = href ? document.querySelector(href) : null;
         if (target) {
           const navHeight = 72; // Nav bar height
-          const targetPosition = target.offsetTop - navHeight;
+          const targetPosition = (target as HTMLElement).offsetTop - navHeight;
           window.scrollTo({
             top: targetPosition,
             behavior: 'smooth'

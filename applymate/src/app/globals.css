@@ -20,8 +20,144 @@
   }
 } */
 
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling for webkit browsers */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Parallax layers for smooth animations */
+.parallax-layer {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize animations */
+.feature-card,
+.float-element,
+.grid-item {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth link transitions */
+a {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Smooth scrolling performance optimization */
+@media (prefers-reduced-motion: no-preference) {
+  * {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Better webkit font smoothing */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Mobile responsive improvements */
+@media (max-width: 768px) {
+  /* Prevent horizontal overflow on mobile */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Better touch targets for mobile */
+  a, button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Optimize text for mobile readability */
+  h1 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Reduce animations on mobile for performance */
+  .parallax-slow,
+  .parallax-medium,
+  .parallax-fast {
+    transform: none !important;
+  }
+
+  /* Mobile feature cards */
+  .feature-card-mobile {
+    transition: all 0.3s ease;
+  }
+
+  .feature-card-mobile:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Prevent layout shift on load */
+img, video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
 }

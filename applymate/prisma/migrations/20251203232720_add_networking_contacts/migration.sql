@@ -78,3 +78,5 @@ ALTER TABLE "ContactChatMessage" ADD CONSTRAINT "ContactChatMessage_contactId_fk
 
 
 
+
+
